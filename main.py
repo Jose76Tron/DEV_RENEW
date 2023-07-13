@@ -11,6 +11,7 @@ client_id = args[0]
 client_secret = args[1]
 refresh_token = args[2]
 github_token = args[3]
+github_repo = args[4]
 
 # Graph API endpoints
 calls = [
@@ -34,6 +35,13 @@ calls = [
     'https://graph.microsoft.com/v1.0/sites/root/drives'
 ]
 
+# Get the public key
+def get_public_key():
+    url = f"https://api.github.com/repos/{github_repo}/actions/secrets/public-key"
+    headers = {"Authorization": f"token {github_token}"}
+    response = requests.get(url, headers=headers)
+    public_key = response.json()["key"]
+    return public_key
 
 def get_access_token(refresh_token, client_id, client_secret):
     headers = {
