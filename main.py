@@ -1,8 +1,8 @@
 import sys
-import json
 import time
 import random
 import requests
+from nacl import encoding, public
 
 
 # Parameters
@@ -35,7 +35,7 @@ calls = [
     'https://graph.microsoft.com/v1.0/sites/root/drives'
 ]
 
-# Get the public key
+# Get the public key of the Github repo
 def get_public_key():
     url = f"https://api.github.com/repos/{github_repo}/actions/secrets/public-key"
     headers = {"Authorization": f"token {github_token}"}
@@ -43,6 +43,21 @@ def get_public_key():
     public_key = response.json()["key"]
     return public_key
 
+# Encrypt the secret value using the public key
+def encrypt(public_key, secret_value):
+    public_key = public.PublicKey(public_key.encode("utf-8"), encoding.Base64Encoder())
+    sealed_box = public.SealedBox(public_key)
+    encrypted = sealed_box.encrypt(secret_value.encode("utf-8"))
+    return encoding.Base64Encoder().encode(encrypted).decode("utf-8")
+
+# Update the secret
+def update_secret(secret_name, secret_value):
+    url = f"https://api.github.com/repos/{github_repo}/actions/secrets/{secret_name}"
+    headers = {"Authorization": f"token {github_token}"}
+    data = {"encrypted_value": encrypt(get_public_key(), secret_value)}
+    response = requests.put(url, headers=headers, json=data)
+
+# Get a new access token and refresh token
 def get_access_token(refresh_token, client_id, client_secret):
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -54,13 +69,12 @@ def get_access_token(refresh_token, client_id, client_secret):
         'client_secret': client_secret,
         'redirect_uri': 'http://localhost:53682/'
     }
-    html = requests.post('https://login.microsoftonline.com/common/oauth2/v2.0/token', data=data, headers=headers)
-    jsontxt = json.loads(html.text)
-    refresh_token = jsontxt['refresh_token']
-    access_token = jsontxt['access_token']
-    return access_token
+    response = requests.post('https://login.microsoftonline.com/common/oauth2/v2.0/token', data=data, headers=headers)
+    refresh_token = response.json()['refresh_token']
+    return response.json()['access_token']
 
-def main():
+# Main run
+def run():
     random.shuffle(calls)
     endpoints = calls[random.randint(0,10)::]
     access_token = get_access_token(refresh_token, client_id, client_secret)
@@ -84,4 +98,7 @@ def main():
     print('Number of calls is :', str(len(endpoints)))
 
 for _ in range(3):
-    main()
+    run()
+
+# Update the value of the REFRESH_TOKEN secret by the last value of the refresh_token variable
+update_secret("REFRESH_TOKEN", refresh_token)
