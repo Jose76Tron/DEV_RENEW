@@ -6,12 +6,11 @@ from nacl import encoding, public
 
 
 # Parameters
-args = sys.argv[1:]
-client_id = args[0]
-client_secret = args[1]
-refresh_token = args[2]
-github_token = args[3]
-github_repo = args[4]
+client_id = sys.argv[1]
+client_secret = sys.argv[2]
+refresh_token = sys.argv[3]
+github_token = sys.argv[4]
+github_repo = sys.argv[5]
 
 # Graph API endpoints
 calls = [
@@ -100,13 +99,14 @@ def run():
             response = session.get(endpoint)
             if response.status_code == 200:
                 num += 1
-                print(f'{num}th Call successful')
+                print(f'Success: {endpoint}')
+            else:
+                print(f'Fail: {endpoint}')
         except requests.exceptions.RequestException as e:
+            print(f'Exception: {endpoint}')
             print(e)
-            pass
-    localtime = time.asctime(time.localtime(time.time()))
-    print('The end of this run is :', localtime)
-    print('Number of calls is :', str(len(endpoints)))
+    print('Successful calls: {}/{}'.format(num, len(endpoints)))
+    print('Finished at: {}\n'.format(time.asctime(time.localtime(time.time()))))
 
 for _ in range(3):
     run()
