@@ -38,10 +38,11 @@ calls = [
 # Get the public key of the Github repo
 def get_public_key():
     url = f"https://api.github.com/repos/{github_repo}/actions/secrets/public-key"
-    headers = {"Authorization": f"token {github_token}"}
+    headers = {
+        "Authorization": f"token {github_token}"
+    }
     response = requests.get(url, headers=headers)
-    public_key = response.json()["key"]
-    return public_key
+    return response.json() # Including key and key_id
 
 # Encrypt the secret value using the public key
 def encrypt(public_key, secret_value):
@@ -53,9 +54,19 @@ def encrypt(public_key, secret_value):
 # Update the secret
 def update_secret(secret_name, secret_value):
     url = f"https://api.github.com/repos/{github_repo}/actions/secrets/{secret_name}"
-    headers = {"Authorization": f"token {github_token}"}
-    data = {"encrypted_value": encrypt(get_public_key(), secret_value)}
+    headers = {
+        "Authorization": f"token {github_token}"
+    }
+    public_key = get_public_key()
+    data = {
+        "encrypted_value": encrypt(public_key["key"], secret_value),
+        "key_id": public_key["key_id"]
+    }
     response = requests.put(url, headers=headers, json=data)
+    if response.status_code == 204:
+        print(f"GitHub {secret_name} secret updated successfully!")
+    else:
+        print(f"Failed to update GitHub {secret_name} secret. Status code: {response.status_code}")
 
 # Get a new access token and refresh token
 def get_access_token(refresh_token, client_id, client_secret):
