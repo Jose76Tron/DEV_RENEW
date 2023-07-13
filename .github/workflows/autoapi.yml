@@ -1,14 +1,12 @@
 # Automatically call APIs
-name: MSO-E5-Dev-AutoRenew
+name: MS-E5-Dev-Auto-Renew
 
 on: 
   release:
     types: [published]
   push:
     tags:
-    - 'v*'
-  #  branches: 
-  #    - master
+      - 'v*'
   schedule:
     - cron: "10 */2 * * *"
   watch:
@@ -17,8 +15,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: (github.event.repository.owner.id == github.event.sender.id) || ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}  # Self-ordered start
-    # if: github.event.repository.owner.id == github.event.sender.id  # Self-ordered start
+    # Run on master branch only and Self-ordered start
+    if: |
+      github.ref == 'refs/heads/master' &&
+      ( (github.event.repository.owner.id == github.event.sender.id) || ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }} )
     name: Build and call APIs
     steps:
     - name: Checkout
@@ -54,4 +54,3 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: ${{ github.ref }}
-        # force_with_lease: true
