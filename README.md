@@ -53,11 +53,13 @@ The goal of this step is to get the client ID, the client secret, and the refres
 
 ### **Manually call the workflow**
 
-- On your repo's homepage, click the star button (above the repo description section) to manually call the workflow.
-- Click on the Actions tab to see the log of the workflow and check if the API is called correctly or if there are any errors.
+There are two ways to call the workflow manually:
+    - On your repo's homepage, click the star button (above the repo's description section).
+    - Click your repo's Actions tab > Click your workflow name > Click **Run workflow** dropdown > Click **Run workflow** button.
 
 ## **Additional Information**
 
+- Click the repo's Actions tab to see the log of the workflow and check if the API is called correctly or if there are any errors.
 - The default setting is to run three rounds every two hours. You can modify your own crontab to change the frequency and time.
 - If you need to modify the API calls, you can check the Graph Explorer at **[https://developer.microsoft.com/graph/graph-explorer/preview](https://developer.microsoft.com/graph/graph-explorer/preview)**.
 - The GitHub Action provides a virtual environment with 2-core CPU, 7 GB RAM memory, and 14 GB SSD hard disk space.
