@@ -54,8 +54,8 @@ The goal of this step is to get the client ID, the client secret, and the refres
 ### **Manually call the workflow**
 
 There are two ways to call the workflow manually:
-    - On your repo's homepage, click the star button (above the repo's description section).
-    - Click your repo's Actions tab > Click your workflow name > Click **Run workflow** dropdown > Click **Run workflow** button.
+1. On your repo's homepage, click the star button (above the repo's description section).
+2. Click your repo's Actions tab > Click your workflow name > Click **Run workflow** dropdown > Click **Run workflow** button.
 
 ## **Additional Information**
 
