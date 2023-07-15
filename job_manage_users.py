@@ -14,15 +14,14 @@ class ManageUsers():
         return len(response.json()["value"])
     
     # Get a random user (userPrincipalName)
-    def get_a_random_user(self):
+    def get_random_user(self):
         response = call_api_get("https://graph.microsoft.com/v1.0/users", self.access_token)
-        user = random.choice([item.get("userPrincipalName") for item in response.json()["value"]])
-        return user
+        return random.choice([item.get("userPrincipalName") for item in response.json()["value"]])
     
     # Add a user with auto generated user's info
     def add_user(self, recursive_count=0):
         user = __class__.generate_random_name()
-        domain = __class__.select_random_domain()
+        domain = self.get_random_domain()
         data = {
             "accountEnabled": True,
             "displayName": user["displayName"],
@@ -30,8 +29,8 @@ class ManageUsers():
             "surname": user["surname"],
             "mailNickname": user["mailNickname"],
             "mobilePhone": __class__.generate_random_phone_number(),
-            "mail": user["userPrincipalName"] + domain,
-            "userPrincipalName": user["userPrincipalName"] + domain,
+            "mail": user["userPrincipalName"] + "@" + domain,
+            "userPrincipalName": user["userPrincipalName"] + "@" + domain,
             "preferredLanguage": "en",
             "passwordProfile": {
                 "forceChangePasswordNextSignIn": True,
@@ -56,7 +55,7 @@ class ManageUsers():
     
     # Delete a user randomly
     def delete_a_random_user(self, recursive_count=0):
-        user_id = self.get_a_random_user()
+        user_id = self.get_random_user()
         if not self.check_user_role(user_id):
             self.delete_user_by_id(user_id)
         else:
@@ -101,9 +100,9 @@ class ManageUsers():
         last = (str(random.randint(0, 9999)).zfill(4))
         return "{}{}{}".format(first, second, last)
 
-    @staticmethod
-    def select_random_domain():
-        return "{}{}".format("@", random.choice(["hung.vn", "1rhvw.onmicrosoft.com"]))
+    def get_random_domain(self):
+        response = call_api_get("https://graph.microsoft.com/v1.0/domains", self.access_token)
+        return random.choice([item.get("id") for item in response.json()["value"]])
 
     # Main run
     def run(self):
