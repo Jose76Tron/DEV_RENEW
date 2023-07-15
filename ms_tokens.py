@@ -72,11 +72,15 @@ class MSTokens():
             "redirect_uri": "http://localhost:53682/"
         }
         response = requests.post(url, data=data, headers=headers)
-        if self.mode == "pro":
-            self.update_secret("REFRESH_TOKEN", response.json()["refresh_token"])
-        elif self.mode == "dev":
-            self.save_tokens_to_file(json.dumps(response.json())) # Save data into file
-        return response.json()["access_token"]
+        if response.status_code == 200:
+            print("{}: {}".format("Success", "Get access token"))
+            if self.mode == "pro":
+                self.update_secret("REFRESH_TOKEN", response.json()["refresh_token"])
+            elif self.mode == "dev":
+                self.save_tokens_to_file(json.dumps(response.json())) # Save data into file
+            return response.json()["access_token"]
+        else:
+            print("{}: {} {} {}".format("Error", "Get access token", response.status_code, response.text))
 
     # Get refresh token from file
     def get_refresh_token_from_file(self):

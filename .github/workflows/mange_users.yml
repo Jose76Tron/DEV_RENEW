@@ -36,11 +36,16 @@ jobs:
       run: |
         pip install requests
         pip install pynacl
-    - name: Add and delete users
+    - name: Get access token and update refresh token
+      id: get_access_token_step
       run: |
         echo `date +"%Y-%m-%d %H:%M:%S"` begin > time.log
-        access_token=$(python3 ms_tokens.py ${{ secrets.CONFIG_ID }} ${{ secrets.CONFIG_KEY }} ${{ secrets.REFRESH_TOKEN }} ${{ secrets.GH_TOKEN }} ${{ github.repository }}  | tail -n 1)
-        python3 api_users.py $access_token
+        ms_tokens_output=$(python3 ms_tokens.py ${{ secrets.CONFIG_ID }} ${{ secrets.CONFIG_KEY }} ${{ secrets.REFRESH_TOKEN }} ${{ secrets.GH_TOKEN }} ${{ github.repository }})
+        echo "$ms_tokens_output"
+        echo "access_token=$(echo "$ms_tokens_output" | sed -n '$p')" >> "$GITHUB_OUTPUT"
+    - name: Add and delete users
+      run: |
+        python3 api_users.py ${{steps.get_access_token_step.outputs.access_token}}
     - name: Commit
       run: |
         git config --global user.email ls@hung.vn
