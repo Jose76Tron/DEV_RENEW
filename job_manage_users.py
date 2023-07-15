@@ -4,7 +4,7 @@ import string
 from helpers import *
 
 
-class ApiUsers():
+class ManageUsers():
     def __init__(self, access_token=""):
         self.access_token = access_token
     
@@ -128,7 +128,7 @@ class ApiUsers():
 
 if __name__ == "__main__":
     # For production
-    users = ApiUsers(access_token=sys.argv[1])
+    users = ManageUsers(access_token=sys.argv[1])
     users.run()
 
     # For testing on local machine
@@ -139,5 +139,5 @@ if __name__ == "__main__":
     #     client_secret="", # Manually enter
     #     tokens_file_name="tokens.txt" # The refresh token is in this file
     # )
-    # users = ApiUsers(access_token=mst.get_access_token())
+    # users = ManageUsers(access_token=mst.get_access_token())
     # users.run()

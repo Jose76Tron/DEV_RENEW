@@ -104,7 +104,6 @@ class MSTokens():
             shutil.copy2(tokens_backup_file_path, self.tokens_file_path)
 
 
-# For test purpose only
 if __name__ == "__main__":
     # For production
     mst = MSTokens(
