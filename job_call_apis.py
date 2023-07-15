@@ -38,9 +38,9 @@ class CallApis():
                 response = call_api_get("https://graph.microsoft.com/v1.0/users", self.access_token)
                 if response.status_code == 200:
                     num += 1
-                    print("{}: {} {}".format("Success", "Call API", {endpoint}))
+                    print("{}: {} {}".format("Success", "Call API", endpoint))
                 else:
-                    print("{}: {} {} {} {}".format("Error", "Call API", {endpoint}, response.status_code, response.text))
+                    print("{}: {} {} {} {}".format("Error", "Call API", endpoint, response.status_code, response.text))
             print("Successful calls: {}/{}".format(num, len(endpoints)))
             print("Finished at: {}\n".format(time.asctime(time.localtime(time.time()))))
 
