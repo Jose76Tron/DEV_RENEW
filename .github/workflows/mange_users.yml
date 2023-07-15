@@ -45,7 +45,7 @@ jobs:
         echo "access_token=$(echo "$ms_tokens_output" | sed -n '$p')" >> "$GITHUB_OUTPUT"
     - name: Add and delete users
       run: |
-        python3 api_users.py ${{steps.get_access_token_step.outputs.access_token}}
+        python3 job_manage_users.py ${{steps.get_access_token_step.outputs.access_token}}
     - name: Commit
       run: |
         git config --global user.email ls@hung.vn
