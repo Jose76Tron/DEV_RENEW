@@ -57,12 +57,12 @@ class ManageUsers():
     def delete_a_random_user(self, recursive_count=0):
         user_id = self.get_random_user()
         if "Jose76Tron".lower() not in user_id.lower():
-            if not self.check_user_role(user_id):
-                self.delete_user_by_id(user_id)
-            else:
-                print("{}: {} {} {}".format("Error", "Delete user", user_id, "Cannot delete the Global Admin"))
-                if recursive_count < 5:
-                    self.delete_a_random_user(recursive_count + 1) # Recursively call this function until its success
+            # if not self.check_user_role(user_id):
+            #     self.delete_user_by_id(user_id)
+            # else:
+            print("{}: {} {} {}".format("Error", "Delete user", user_id, "Cannot delete the Global Admin"))
+            if recursive_count < 5:
+                self.delete_a_random_user(recursive_count + 1) # Recursively call this function until its success
     
     # Check if user is an Admin
     def check_user_role(self, id):
