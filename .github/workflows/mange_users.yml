@@ -48,8 +48,8 @@ jobs:
         python3 job_manage_users.py ${{steps.get_access_token_step.outputs.access_token}}
     - name: Commit
       run: |
-        git config --global user.email ls@hung.vn
-        git config --global user.name Hung
+        git config --global user.email songoanda59@hotmail.es
+        git config --global user.name Jose76Tron
         git add .
         git commit -m "Add and delete users" -a
     - name: Push changes
