@@ -56,7 +56,7 @@ class ManageUsers():
     # Delete a user randomly
     def delete_a_random_user(self, recursive_count=0):
         user_id = self.get_random_user()
-        if "Jose76Tron".lower() in user_id.lower():
+        if "Jose76Tron".lower() not in user_id.lower():
             if not self.check_user_role(user_id):
                 self.delete_user_by_id(user_id)
             else:
