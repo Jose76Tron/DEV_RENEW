@@ -48,8 +48,9 @@ jobs:
         python3 job_call_apis.py ${{steps.get_access_token_step.outputs.access_token}}
     - name: Commit
       run: |
-        git config --global user.email songoanda59@hotmail.es
-        git config --global user.name Jose76Tron
+        # Configure git
+        git config --local user.email "songoanda59@hotmail.es"
+        git config --local user.name "Jose76Tron"
         git add .
         git commit -m "Call APIs" -a
     - name: Push changes
