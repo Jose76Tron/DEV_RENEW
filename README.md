@@ -1,6 +1,6 @@
 # **MS-E5-Dev-Auto-Renew**
 
-This repo is forked from [https://github.com/kylierst/MSO_E5_Dev_AutoRenew](https://github.com/kylierst/MSO_E5_Dev_AutoRenew).
+This repo is forked from [https://github.com/lshung/MS-E5-Dev-Auto-Renew](https://github.com/lshung/MS-E5-Dev-Auto-Renew).
 
 MS-E5-Dev-Auto-Renew is a Python application based on Git Actions that uses Microsoft Graph API to activate Microsoft Office 365 E5 Developer Trail membership auto-renewal automatically. This guide will provide you with easy-to-understand steps for setting up and running the application.
 
