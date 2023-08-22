@@ -92,6 +92,7 @@ class ManageUsers:
                     "Error", "Delete user", user_id, "Cannot delete the Global Admin"
                 )
             )
+            self.delete_a_random_user()  # Recursively call this function until its success to delete another user that is not a Global Admin
 
     # Check if user is an Admin
     def check_user_role(self, id):
