@@ -78,14 +78,14 @@ class ManageUsers:
             )
             if recursive_count < 5:
                 self.delete_user_by_id(
-                    self, id, recursive_count + 1
+                    id, recursive_count + 1
                 )  # Recursively call this function until its success to delete the user
 
     # Delete a user randomly
     def delete_a_random_user(self):
         user_id = self.get_random_user()
         if not self.check_user_role(user_id):
-            self.delete_user_by_id(self, user_id)
+            self.delete_user_by_id(user_id)
         else:
             print(
                 "{}: {} {} {}".format(
@@ -94,9 +94,9 @@ class ManageUsers:
             )
 
     # Check if user is an Admin
-    def check_user_role(id):
+    def check_user_role(self, id):
         response = call_api_get(
-            f"https://graph.microsoft.com/v1.0/users/{id}/memberOf", id
+            f"https://graph.microsoft.com/v1.0/users/{id}/memberOf", self.access_token
         )
 
         # if response status code is not 200, return False
@@ -107,12 +107,11 @@ class ManageUsers:
         if not response.json().get("value"):
             return False
 
-        is_admin = any(
+        return any(
             item.get("@odata.type") == "#microsoft.graph.directoryRole"
             and item.get("roleTemplateId") == "62e90394-69f5-4237-9190-012177145e10"
             for item in response.json()["value"]
         )
-        return is_admin
 
     @staticmethod
     def generate_password(length=12):
