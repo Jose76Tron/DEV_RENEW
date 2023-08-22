@@ -77,7 +77,7 @@ class ManageUsers:
                 )
             )
             if recursive_count < 5:
-                self.delete_a_random_user(
+                self.delete_user_by_id(
                     self, id, recursive_count + 1
                 )  # Recursively call this function until its success to delete the user
 
@@ -85,7 +85,7 @@ class ManageUsers:
     def delete_a_random_user(self):
         user_id = self.get_random_user()
         if not self.check_user_role(user_id):
-            self.delete_user_by_id(user_id)
+            self.delete_user_by_id(self, user_id)
         else:
             print(
                 "{}: {} {} {}".format(
